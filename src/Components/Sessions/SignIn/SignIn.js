@@ -7,8 +7,9 @@ import {
   Text,
   Pressable,
 } from 'react-native';
+import { useAuth } from '../../../contexts/Auth';
 
-import DefaultButton from '../../Buttons/DefaultButton';
+import DefaultButton from '../../../Components/Buttons/DefaultButton';
 
 const styles = StyleSheet.create({
   signInContainer: {
@@ -82,6 +83,9 @@ const passwordShowButtonStyles = StyleSheet.create({
 });
 
 const SignIn = ({ navigation }) => {
+  const auth = useAuth();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(true);
   const [showHide, toggleShowHide] = useState('Show');
 
@@ -98,6 +102,14 @@ const SignIn = ({ navigation }) => {
     navigation.navigate('userIndex');
   };
 
+  const handleSignInButton = async () => {
+    await auth.signIn(username, password);
+  };
+
+  const handleUsernameInput = e => {
+    setUsername(e);
+  };
+
   return (
     <SafeAreaView style={styles.signInContainer}>
       <Text style={styles.titleText}>AllowWants</Text>
@@ -105,8 +117,10 @@ const SignIn = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="email address"
-          keyboardType="email-address"
+          placeholder="username"
+          onChangeText={handleUsernameInput}
+          value={username}
+          autoCapitalize="none"
         />
       </View>
       <View style={styles.passwordInputContainer}>
@@ -114,6 +128,9 @@ const SignIn = ({ navigation }) => {
           style={{ ...styles.input, ...passwordInputStyles }}
           placeholder="password"
           secureTextEntry={showPassword}
+          onChangeText={e => setPassword(e)}
+          value={password}
+          autoCapitalize="none"
         />
         <DefaultButton
           callback={toggleShowPassword}
@@ -122,7 +139,7 @@ const SignIn = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <DefaultButton callback={goToUsersIndex} buttonText="Sign In" />
+        <DefaultButton callback={handleSignInButton} buttonText="Sign In" />
       </View>
       <View style={styles.inputContainer}>
         <DefaultButton callback={goToSignUp} buttonText="Sign Up Instead" />

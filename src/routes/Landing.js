@@ -1,7 +1,6 @@
 import React from 'react';
 import { SafeAreaView, View, Text, StyleSheet } from 'react-native';
-import DefaultButton from './Buttons/DefaultButton';
-
+import DefaultButton from '../Components/Buttons/DefaultButton';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,7 +24,6 @@ const styles = StyleSheet.create({
 });
 
 const Landing = ({ navigation }) => {
-
   const goToSignUp = () => {
     navigation.navigate('signUp');
   };

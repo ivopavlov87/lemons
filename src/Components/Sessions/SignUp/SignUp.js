@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View, StyleSheet, TextInput, Text } from 'react-native';
+import axios from 'axios';
 
-import DefaultButton from '../../Buttons/DefaultButton';
+import DefaultButton from '../../../Components/Buttons/DefaultButton';
 
 const styles = StyleSheet.create({
   SignUpContainer: {
@@ -105,21 +106,22 @@ const SignUp = ({ navigation }) => {
   };
 
   const createUserAcct = async () => {
-    const response = await fetch('http://localhost:3000/api/v1/users', {
+    return await axios({
       method: 'post',
+      url: 'http://localhost:3000/api/v1/users',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
+      data: {
         user: {
           username: username,
           email: email,
           password: password,
         },
-      }),
+      },
     }).then(response => {
-      console.log('idk');
+      console.log('idk a user was created i guess');
     });
   };
 
@@ -133,6 +135,7 @@ const SignUp = ({ navigation }) => {
           value={email}
           placeholder="email address"
           keyboardType="email-address"
+          autoCapitalize="none"
         />
       </View>
       <View style={styles.inputContainer}>
@@ -141,6 +144,7 @@ const SignUp = ({ navigation }) => {
           onChangeText={e => setUsername(e)}
           value={username}
           placeholder="username"
+          autoCapitalize="none"
         />
       </View>
       <View style={styles.passwordInputContainer}>
@@ -150,6 +154,7 @@ const SignUp = ({ navigation }) => {
           value={password}
           placeholder="password"
           secureTextEntry={showPassword}
+          autoCapitalize="none"
         />
         <DefaultButton
           callback={toggleShowPassword}
@@ -162,6 +167,7 @@ const SignUp = ({ navigation }) => {
           style={{ ...styles.input, ...passwordInputStyles }}
           placeholder="confirm password"
           secureTextEntry={showPasswordConfirm}
+          autoCapitalize="none"
         />
         <DefaultButton
           callback={toggleShowPasswordConfirm}
